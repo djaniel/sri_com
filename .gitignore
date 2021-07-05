@@ -1,2 +1,3 @@
 ./Debug/sri_msgs
-.o
+**.o
+**.d

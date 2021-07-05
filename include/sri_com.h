@@ -9,6 +9,7 @@
 #define SRI_COM_H_
 
 #include <msg_v3_uint16.h>
+#include <msg_v3_int16.h>
 
 
 

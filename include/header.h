@@ -13,15 +13,15 @@
 #define START_MSG 0xFE
 
 enum type_msg{
-	BYTE=0x0,
-	V2_BYTE,
-	V3_BYTE,
-	INT16,
-	V2_INT16,
-	V3_INT16,
-	uINT16,
-	V2_uINT16,
-	V3_uINT16,
+	t_BYTE=0x0,
+	t_V2BYTE,
+	t_V3BYTE,
+	t_INT16,
+	t_V2INT16,
+	t_V3INT16,
+	t_uINT16,
+	t_V2uINT16,
+	t_V3uINT16,
 };
 
 enum component{

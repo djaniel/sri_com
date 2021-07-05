@@ -23,8 +23,6 @@ int main() {
 
 	_MSG_3V_UINT16_CHECKSUM( msg );
 
-	_SRI_MSG_SEND (msg);
-
 	cout << "start:    " << static_cast<unsigned>( msg.header.start )<< endl;
 	cout << "n_payoad: " << static_cast<unsigned>( msg.header.n_payload) << endl;
 	cout << "sequence: " << static_cast<unsigned>( msg.header.sequence.value )<< endl;
@@ -34,6 +32,12 @@ int main() {
 	cout << "e1:  " << hex << msg.payload.e1.value  ;
 	cout << ", e2:  " << msg.payload.e2.value ;
 	cout << ", e3:  " << msg.payload.e3.value << endl;
+
+	msg_3v_int16 msg2;
+
+	//_SRI_MSG_SEND_3V_UINT16(msg);
+
+
 
 	return 0;
 }
