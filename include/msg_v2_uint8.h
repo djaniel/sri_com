@@ -15,14 +15,14 @@ typedef struct V2_UINT8{
 	uint8_t e2;
 }V2_UINT8;
 
-typedef struct msg_2v_uint8{
+typedef struct msg_v2_uint8{
 	HEADER header;
 	V2_UINT8 payload;
 	uint8_t checksum;
 }msg_2v_uint8;
 
 
-#define _MSG_2V_UINT8(x) \
+#define _MSG_V2_UINT8(x) \
 	x.header.start = START_MSG; \
 	x.header.n_payload = 0x02; \
 	x.header.sequence = 0x00; \
@@ -31,16 +31,16 @@ typedef struct msg_2v_uint8{
 	x.payload.e1=0x00; \
 	x.payload.e2=0x00;
 
-#define _SRI_MSG_SEND_2V_UINT8(x) \
-	PRINT_SERIAL_FCN(x.header.start); \
-	PRINT_SERIAL_FCN(x.header.n_payload); \
-	PRINT_SERIAL_FCN(x.header.sequence); \
-	PRINT_SERIAL_FCN(x.header.id_emitter); \
-	PRINT_SERIAL_FCN(x.header.type); \
-	PRINT_SERIAL_FCN(x.payload.e1); \
-	PRINT_SERIAL_FCN(x.payload.e2);
+#define _MSG_V2_UINT8_SERIALIZE(x) \
+	{x.header.start, \
+	x.header.n_payload, \
+	x.header.sequence, \
+	x.header.id_emitter, \
+	x.header.type, \
+	x.payload.e1, \
+	x.payload.e2}
 
-#define _MSG_2V_UINT8_CHECKSUM(x)\
+#define _MSG_V2_UINT8_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ x.payload.e1 ^ x.payload.e2
 
 #endif /* MSG_V2_UINT8_H_ */

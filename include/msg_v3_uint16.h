@@ -16,14 +16,14 @@ typedef struct V3_UINT16{
 	uinteger16_t e3;
 }V3_UINT16;
 
-typedef struct msg_3v_uint16{
+typedef struct msg_v3_uint16{
 	HEADER header;
 	V3_UINT16 payload;
 	uint8_t checksum;
 }msg_3v_uint16;
 
 
-#define _MSG_3V_UINT16(x) \
+#define _MSG_V3_UINT16(x) \
 	x.header.start = START_MSG; \
 	x.header.n_payload = 0x06; \
 	x.header.sequence = 0x00; \
@@ -33,20 +33,20 @@ typedef struct msg_3v_uint16{
 	x.payload.e2.value=0x0000; \
 	x.payload.e3.value=0x0000;
 
-#define _SRI_MSG_SEND_3V_UINT16(x) \
-	PRINT_SERIAL_FCN(x.header.start); \
-	PRINT_SERIAL_FCN(x.header.n_payload); \
-	PRINT_SERIAL_FCN(x.header.sequence); \
-	PRINT_SERIAL_FCN(x.header.id_emitter); \
-	PRINT_SERIAL_FCN(x.header.type); \
-	PRINT_SERIAL_FCN(x.payload.e1.bytes[0]); \
-	PRINT_SERIAL_FCN(x.payload.e1.bytes[1]); \
-	PRINT_SERIAL_FCN(x.payload.e2.bytes[0]); \
-	PRINT_SERIAL_FCN(x.payload.e2.bytes[1]); \
-	PRINT_SERIAL_FCN(x.payload.e3.bytes[0]); \
-	PRINT_SERIAL_FCN(x.payload.e3.bytes[1]);
+#define _MSG_V3_UINT16_SERIALIZE(x) \
+	{x.header.start, \
+	x.header.n_payload, \
+	x.header.sequence, \
+	x.header.id_emitter, \
+	x.header.type, \
+	x.payload.e1.bytes[0], \
+	x.payload.e1.bytes[1], \
+	x.payload.e2.bytes[0], \
+	x.payload.e2.bytes[1], \
+	x.payload.e3.bytes[0], \
+	x.payload.e3.bytes[1]}
 
-#define _MSG_3V_UINT16_CHECKSUM(x)\
+#define _MSG_V3_UINT16_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ _CHECKSUM_INT16(x.payload.e1) ^ _CHECKSUM_INT16(x.payload.e2) ^ _CHECKSUM_INT16(x.payload.e3)
 
 #endif /* MSG_V3_UINT16_H_ */
