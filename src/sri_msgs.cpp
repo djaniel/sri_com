@@ -28,7 +28,7 @@ int main() {
 	msg.payload.e3.value = 0xF005;
 
 	_MSG_3V_UINT16_CHECKSUM( msg );
-	//_UART_MSG_SEND(msg);
+
 
 	cout << "start:    " << static_cast<unsigned>( msg.header.start )<< endl;
 	cout << "n_payoad: " << static_cast<unsigned>( msg.header.n_payload) << endl;
