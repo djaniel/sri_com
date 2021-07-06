@@ -34,14 +34,15 @@ typedef struct msg_v3_uint8{
 	x.payload.e3=0x00;
 
 #define _MSG_V3_UINT8_SERIALIZE(x) \
-	{x.header.start, \
-	x.header.n_payload, \
-	x.header.sequence, \
-	x.header.id_emitter, \
-	x.header.type, \
-	x.payload.e1, \
-	x.payload.e2, \
-	x.payload.e3}
+	{x.header.start,\
+	x.header.n_payload,\
+	x.header.sequence,\
+	x.header.id_emitter,\
+	x.header.type,\
+	x.payload.e1,\
+	x.payload.e2,\
+	x.payload.e3,\
+	x.checksum}
 
 #define _MSG_V3_UINT8_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ x.payload.e1 ^ x.payload.e2 ^ x.payload.e3

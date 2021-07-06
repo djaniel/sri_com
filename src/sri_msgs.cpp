@@ -19,15 +19,15 @@ using namespace std;
 
 
 int main() {
-	msg_3v_uint16 msg;
+	msg_v3_uint16 msg;
 
-	_MSG_3V_UINT16( msg );
+	_MSG_V3_UINT16( msg );
 
 	msg.payload.e1.value = 0x2401;
 	msg.payload.e2.value = 0x2003;
 	msg.payload.e3.value = 0xF005;
 
-	_MSG_3V_UINT16_CHECKSUM( msg );
+	_MSG_V3_UINT16_CHECKSUM( msg );
 
 
 	cout << "start:    " << static_cast<unsigned>( msg.header.start )<< endl;
@@ -41,13 +41,13 @@ int main() {
 
 	msg_3v_int8 msg2;
 
-	_MSG_3V_UINT8(msg2);
+	_MSG_V3_UINT8(msg2);
 
 	msg2.payload.e1 = 0x02;
 	msg2.payload.e2 = 0x03;
 	msg2.payload.e3 = 0x04;
 
-	_SRI_MSG_SEND_3V_UINT16(msg);
+	uint8_t data [] = _MSG_V3_UINT8_SERIALIZE(msg2);
 
 
 

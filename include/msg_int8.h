@@ -35,7 +35,8 @@ typedef struct msg_int8{
 	x.header.sequence, \
 	x.header.id_emitter, \
 	x.header.type, \
-	x.payload.e1}
+	x.payload.e1,\
+	x.checksum}
 
 #define _MSG_INT8_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ x.payload.e1

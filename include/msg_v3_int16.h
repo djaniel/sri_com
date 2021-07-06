@@ -44,7 +44,8 @@ typedef struct msg_3v_int16{
 	x.payload.e2.bytes[0], \
 	x.payload.e2.bytes[1], \
 	x.payload.e3.bytes[0], \
-	x.payload.e3.bytes[1]}
+	x.payload.e3.bytes[1],\
+	x.checksum}
 
 #define _MSG_V3_INT16_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ _CHECKSUM_INT16(x.payload.e1) ^ _CHECKSUM_INT16(x.payload.e2) ^ _CHECKSUM_INT16(x.payload.e3)

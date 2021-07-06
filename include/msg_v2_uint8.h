@@ -38,7 +38,8 @@ typedef struct msg_v2_uint8{
 	x.header.id_emitter, \
 	x.header.type, \
 	x.payload.e1, \
-	x.payload.e2}
+	x.payload.e2,\
+	x.checksum}
 
 #define _MSG_V2_UINT8_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ x.payload.e1 ^ x.payload.e2

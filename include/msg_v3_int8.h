@@ -41,7 +41,8 @@ typedef struct msg_v3_int8{
 	x.header.type, \
 	x.payload.e1, \
 	x.payload.e2, \
-	x.payload.e3}
+	x.payload.e3,\
+	x.checksum}
 
 #define _MSG_V3_INT8_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ x.payload.e1 ^ x.payload.e2 ^ x.payload.e3
