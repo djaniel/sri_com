@@ -39,7 +39,7 @@ int main() {
 	cout << ", e2:  " << msg.payload.e2.value ;
 	cout << ", e3:  " << msg.payload.e3.value << endl;
 
-	msg_3v_int8 msg2;
+	msg_v3_int8 msg2;
 
 	_MSG_V3_UINT8(msg2);
 
@@ -47,8 +47,7 @@ int main() {
 	msg2.payload.e2 = 0x03;
 	msg2.payload.e3 = 0x04;
 
-	uint8_t data [] = _MSG_V3_UINT8_SERIALIZE(msg2);
-
+	uint8_t datas[] = _MSG_V3_UINT16_SERIALIZE(msg);
 
 
 	return 0;

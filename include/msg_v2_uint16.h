@@ -19,7 +19,7 @@ typedef struct msg_v2_uint16{
 	HEADER header;
 	V2_UINT16 payload;
 	uint8_t checksum;
-}msg_2v_uint16;
+}msg_v2_uint16;
 
 
 #define _MSG_V2_UINT16(x) \

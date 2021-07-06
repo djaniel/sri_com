@@ -20,7 +20,7 @@ typedef struct msg_3v_int16{
 	HEADER header;
 	V3_sINT16 payload;
 	uint8_t checksum;
-}msg_3v_int16;
+}msg_v3_int16;
 
 
 #define _MSG_3V_INT16(x) \
