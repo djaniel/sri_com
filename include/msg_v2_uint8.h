@@ -31,6 +31,15 @@ typedef struct msg_2v_uint8{
 	x.payload.e1=0x00; \
 	x.payload.e2=0x00;
 
+#define _SRI_MSG_SEND_2V_UINT8(x) \
+	PRINT_SERIAL_FCN(x.header.start); \
+	PRINT_SERIAL_FCN(x.header.n_payload); \
+	PRINT_SERIAL_FCN(x.header.sequence); \
+	PRINT_SERIAL_FCN(x.header.id_emitter); \
+	PRINT_SERIAL_FCN(x.header.type); \
+	PRINT_SERIAL_FCN(x.payload.e1); \
+	PRINT_SERIAL_FCN(x.payload.e2);
+
 #define _MSG_2V_UINT8_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ x.payload.e1 ^ x.payload.e2
 

@@ -33,6 +33,16 @@ typedef struct msg_3v_int8{
 	x.payload.e2=0x00; \
 	x.payload.e3=0x00;
 
+#define _SRI_MSG_SEND_3V_INT8(x) \
+	PRINT_SERIAL_FCN(x.header.start); \
+	PRINT_SERIAL_FCN(x.header.n_payload); \
+	PRINT_SERIAL_FCN(x.header.sequence); \
+	PRINT_SERIAL_FCN(x.header.id_emitter); \
+	PRINT_SERIAL_FCN(x.header.type); \
+	PRINT_SERIAL_FCN(x.payload.e1); \
+	PRINT_SERIAL_FCN(x.payload.e2); \
+	PRINT_SERIAL_FCN(x.payload.e3);
+
 #define _MSG_3V_INT8_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ x.payload.e1 ^ x.payload.e2 ^ x.payload.e3
 

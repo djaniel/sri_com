@@ -29,6 +29,14 @@ typedef struct msg_int8{
 	x.header.type = t_INT8; \
 	x.payload.e1=0x00;
 
+#define _SRI_MSG_SEND_INT8(x) \
+	PRINT_SERIAL_FCN(x.header.start); \
+	PRINT_SERIAL_FCN(x.header.n_payload); \
+	PRINT_SERIAL_FCN(x.header.sequence); \
+	PRINT_SERIAL_FCN(x.header.id_emitter); \
+	PRINT_SERIAL_FCN(x.header.type); \
+	PRINT_SERIAL_FCN(x.payload.e1);
+
 #define _MSG_INT8_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ x.payload.e1
 

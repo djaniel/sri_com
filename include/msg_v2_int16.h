@@ -31,6 +31,17 @@ typedef struct msg_2v_int16{
 	x.payload.e1.value=0x0000; \
 	x.payload.e2.value=0x0000;
 
+#define _SRI_MSG_SEND_2V_INT16(x) \
+	PRINT_SERIAL_FCN(x.header.start); \
+	PRINT_SERIAL_FCN(x.header.n_payload); \
+	PRINT_SERIAL_FCN(x.header.sequence); \
+	PRINT_SERIAL_FCN(x.header.id_emitter); \
+	PRINT_SERIAL_FCN(x.header.type); \
+	PRINT_SERIAL_FCN(x.payload.e1.bytes[0]); \
+	PRINT_SERIAL_FCN(x.payload.e1.bytes[1]); \
+	PRINT_SERIAL_FCN(x.payload.e2.bytes[0]); \
+	PRINT_SERIAL_FCN(x.payload.e2.bytes[1]);
+
 #define _MSG_2V_INT16_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ _CHECKSUM_INT16(x.payload.e1) ^ _CHECKSUM_INT16(x.payload.e2)
 

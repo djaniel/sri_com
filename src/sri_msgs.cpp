@@ -8,7 +8,9 @@
 
 #include <iostream>
 #include <sri_com.h>
-#define PRINT_SERIAL_FCN printf
+#include <stdio.h>
+#define PRINT_SERIAL_FCN(x) printf("%x",x)
+
 using namespace std;
 
 
@@ -45,7 +47,7 @@ int main() {
 	msg2.payload.e2 = 0x03;
 	msg2.payload.e3 = 0x04;
 
-	//_SRI_MSG_SEND_3V_UINT16(msg);
+	_SRI_MSG_SEND_3V_UINT16(msg);
 
 
 
