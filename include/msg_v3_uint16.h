@@ -26,9 +26,8 @@ typedef struct msg_3v_uint16{
 #define _MSG_3V_UINT16(x) \
 	x.header.start = START_MSG; \
 	x.header.n_payload = 0x06; \
-	x.header.sequence.value = 0x0000; \
+	x.header.sequence = 0x00; \
 	x.header.id_emitter = 0x00; \
-	x.header.id_composant = NO_ID; \
 	x.header.type = t_V3uINT16; \
 	x.payload.e1.value=0x0000; \
 	x.payload.e2.value=0x0000; \

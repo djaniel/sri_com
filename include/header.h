@@ -13,23 +13,21 @@
 #define START_MSG 0xFE
 
 enum type_msg{
-	t_BYTE=0x0,
-	t_V2BYTE,
-	t_V3BYTE,
+	t_INT8=0x0,
+	t_V2INT8,
+	t_V3INT8,
+
+	t_uINT8=0x0,
+	t_V2uINT8,
+	t_V3uINT8,
+
 	t_INT16,
 	t_V2INT16,
 	t_V3INT16,
+
 	t_uINT16,
 	t_V2uINT16,
 	t_V3uINT16,
-};
-
-enum component{
-	NO_ID=0x0,
-	HEART_RATE,
-	POSITION,
-	HYGROMETER,
-	ACCELEROMETER
 };
 
 typedef union uinteger16_t{
@@ -45,14 +43,13 @@ typedef union integer16_t{
 typedef struct HEADER{
 	uint8_t start;
 	uint8_t n_payload;
-	uinteger16_t sequence;
+	uint8_t sequence;
 	uint8_t id_emitter;
-	uint8_t id_composant;
 	uint8_t type;
 }HEADER;
 
 #define _CHECKSUM_INT16(x) x.bytes[0] ^ x.bytes[1]
 
-#define _CHECKSUM_HDR(x) x.start ^ x.n_payload ^ _CHECKSUM_INT16(x.sequence) ^ x.id_emitter ^ x.id_composant ^ x.type
+#define _CHECKSUM_HDR(x) x.start ^ x.n_payload ^ x.sequence ^ x.id_emitter ^ x.type
 
 #endif /* HEADER_H_ */

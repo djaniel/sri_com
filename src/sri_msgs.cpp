@@ -9,8 +9,12 @@
 #include <iostream>
 #include <sri_com.h>
 #define PRINT_SERIAL_FCN printf
-
 using namespace std;
+
+
+// loraweb.unilim.fr
+// arduino, raspberry pi
+
 
 int main() {
 	msg_3v_uint16 msg;
@@ -22,18 +26,24 @@ int main() {
 	msg.payload.e3.value = 0xF005;
 
 	_MSG_3V_UINT16_CHECKSUM( msg );
+	//_UART_MSG_SEND(msg);
 
 	cout << "start:    " << static_cast<unsigned>( msg.header.start )<< endl;
 	cout << "n_payoad: " << static_cast<unsigned>( msg.header.n_payload) << endl;
-	cout << "sequence: " << static_cast<unsigned>( msg.header.sequence.value )<< endl;
+	cout << "sequence: " << static_cast<unsigned>( msg.header.sequence )<< endl;
 	cout << "emitter:  " << static_cast<unsigned>( msg.header.id_emitter)  << endl;
-	cout << "id_comp:  " << static_cast<unsigned>( msg.header.id_composant) << endl;
 	cout << "type:  " << static_cast<unsigned>( msg.header.type )<< endl;
 	cout << "e1:  " << hex << msg.payload.e1.value  ;
 	cout << ", e2:  " << msg.payload.e2.value ;
 	cout << ", e3:  " << msg.payload.e3.value << endl;
 
-	msg_3v_int16 msg2;
+	msg_3v_int8 msg2;
+
+	_MSG_3V_UINT8(msg2);
+
+	msg2.payload.e1 = 0x02;
+	msg2.payload.e2 = 0x03;
+	msg2.payload.e3 = 0x04;
 
 	//_SRI_MSG_SEND_3V_UINT16(msg);
 
