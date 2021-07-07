@@ -1,4 +1,5 @@
 ./Debug/sri_msgs
 **.o
 **.d
+.vscode
 /Debug/
