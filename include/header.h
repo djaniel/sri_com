@@ -17,7 +17,7 @@ enum type_msg{
 	t_V2INT8,
 	t_V3INT8,
 
-	t_uINT8=0x0,
+	t_uINT8,
 	t_V2uINT8,
 	t_V3uINT8,
 
