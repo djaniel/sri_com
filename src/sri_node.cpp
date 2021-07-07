@@ -13,6 +13,26 @@
 
 int iter_trame = 0;
 int length_trame = 255;
+bool trame_complete = false;
+uint8_t trame[261];
+HEADER header;
+union msg_union
+{
+    msg_uint8 _uint8;
+    msg_int8 _int8;
+    msg_uint16 _uint16;
+    msg_int16 _int16;
+
+    msg_v2_uint8 _v2_uint8;
+    msg_v2_int8 _v2_int8;
+    msg_v2_uint16 _v2_uint16;
+    msg_v2_int16 _v2_int16;
+
+    msg_v3_uint8 _v3_uint8;
+    msg_v3_int8 _v3_int8;
+    msg_v3_uint16 _v3_uint16;
+    msg_v3_int16 _v3_int16;
+} msg_union;
 
 int main(int argc, char **argv)
 {
@@ -34,49 +54,38 @@ int main(int argc, char **argv)
 
         for (int i = 0; i < num_bytes; i++)
         {
-            ROS_INFO("byte : %x",read_buf[i]);
             if (iter_trame == 0 && read_buf[i] == 0xfe)
             {
+                trame[0] = read_buf[i];
                 iter_trame++;
-                ROS_INFO("START");
             }
-            else if (iter_trame == 1)
+            else if (iter_trame == length_trame - 1)
             {
-                length_trame = (int)read_buf[i] + 6;
-                iter_trame++;
-                ROS_INFO("length : %d",length_trame);
-            }
-            else if (iter_trame == 2)
-            {
-                //check for packet loss with sequencing
-                iter_trame++;
-                ROS_INFO("sequence : %d",(int)read_buf[i]);
-            }
-            else if (iter_trame == 3)
-            {
-                //check the identity
-                iter_trame++;
-                ROS_INFO("identity : %d",(int)read_buf[i]);
-            }
-            else if (iter_trame == 4)
-            {
-                //type de message
-                iter_trame++;
-                ROS_INFO("Type : %d",(int)read_buf[i]);
-            }
-            else if (iter_trame>=5 && iter_trame< length_trame)
-            {
-                //payload
-                iter_trame++;
-                ROS_INFO("payload : %x",read_buf[i]);
-            }
-            else if (iter_trame == length_trame)
-            {
-                //checksum
+                trame[iter_trame] = read_buf[i];
                 iter_trame = 0;
-                ROS_INFO("checksum : %x",read_buf[i]);
+                trame_complete = true;
             }
-            
+            else if (iter_trame > 0)
+            {
+                trame[iter_trame] = read_buf[i];
+                if (iter_trame == 1)
+                {
+                    length_trame = (int)trame[1] + 6;
+                }
+                iter_trame++;
+            }
+
+            if (trame_complete)
+            {
+                uint8_t checksum = trame[0];
+                for (int j = 1; j < length_trame - 1; j++)
+                {
+                    checksum ^= trame[j];
+                }
+                if (trame[length_trame - 1] == checksum)
+                    ROS_INFO("msg received without problem");
+                trame_complete = false;
+            }
         }
         ros::spinOnce();
         r.sleep();
