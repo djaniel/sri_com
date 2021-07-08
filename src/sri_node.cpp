@@ -10,29 +10,163 @@
 
 #include <ros/ros.h>
 #include <sri_com.h>
+#include <std_msgs/Int8MultiArray.h>
+#include <std_msgs/Int16MultiArray.h>
+#include <std_msgs/UInt8MultiArray.h>
+#include <std_msgs/UInt16MultiArray.h>
 
 int iter_trame = 0;
 int length_trame = 255;
 bool trame_complete = false;
 uint8_t trame[261];
-HEADER header;
-union msg_union
+
+std::string emitter_basic_topic = "emitter_";
+std::string emitter_topic;
+
+extern ros::NodeHandle n;
+
+std::vector<std::vector<ros::Publisher> > publisher;
+
+int CheckForEmitter(int number)
 {
-    msg_uint8 _uint8;
-    msg_int8 _int8;
-    msg_uint16 _uint16;
-    msg_int16 _int16;
+    emitter_topic = emitter_basic_topic + std::to_string(number);
+    for (int i = 0; i < publisher.size(); i++)
+    {
+        if (publisher[i][0].getTopic().find(emitter_topic) != std::string::npos)
+        {
+            return i;
+        }
+    }
+    publisher.push_back(std::vector<ros::Publisher>());
+    return publisher.size() - 1;
+}
 
-    msg_v2_uint8 _v2_uint8;
-    msg_v2_int8 _v2_int8;
-    msg_v2_uint16 _v2_uint16;
-    msg_v2_int16 _v2_int16;
+int CheckForMsgType(std::string msg_type, int number)
+{
+    for (int i = 0; i < publisher[number].size(); i++)
+    {
+        if (publisher[number][i].getTopic().find(msg_type) != std::string::npos)
+        {
+            return i;
+        }
+    }
+    publisher[number].push_back(ros::Publisher());
+    return publisher[number].size() - 1;
+}
 
-    msg_v3_uint8 _v3_uint8;
-    msg_v3_int8 _v3_int8;
-    msg_v3_uint16 _v3_uint16;
-    msg_v3_int16 _v3_int16;
-} msg_union;
+void PublishInt8(ros::NodeHandle n, std::string msg_type_name)
+{
+    int num1 = CheckForEmitter((int)trame[3]);
+    int num2 = CheckForMsgType(msg_type_name, num1);
+    if (publisher[num1][num2].getTopic() == "")
+    {
+        std::string topic = "/" + emitter_topic + "/" + msg_type_name;
+        publisher[num1][num2] = n.advertise<std_msgs::Int8MultiArray>(topic.c_str(), 100);
+    }
+    std_msgs::Int8MultiArray _msg_int8;
+    for (int i = 0; i < trame[1]; i++)
+    {
+        _msg_int8.data.push_back(trame[5 + i]);
+    }
+    publisher[num1][num2].publish(_msg_int8);
+}
+
+void PublishUInt8(ros::NodeHandle n, std::string msg_type_name)
+{
+    int num1 = CheckForEmitter((int)trame[3]);
+    int num2 = CheckForMsgType(msg_type_name, num1);
+    if (publisher[num1][num2].getTopic() == "")
+    {
+        std::string topic = "/" + emitter_topic + "/" + msg_type_name;
+        publisher[num1][num2] = n.advertise<std_msgs::UInt8MultiArray>(topic.c_str(), 100);
+    }
+    std_msgs::UInt8MultiArray _msg_uint8;
+    for (int i = 0; i < trame[1]; i++)
+    {
+        _msg_uint8.data.push_back(trame[5 + i]);
+    }
+    publisher[num1][num2].publish(_msg_uint8);
+}
+
+void PublishInt16(ros::NodeHandle n, std::string msg_type_name)
+{
+    int num1 = CheckForEmitter((int)trame[3]);
+    int num2 = CheckForMsgType(msg_type_name, num1);
+    if (publisher[num1][num2].getTopic() == "")
+    {
+        std::string topic = "/" + emitter_topic + "/" + msg_type_name;
+        publisher[num1][num2] = n.advertise<std_msgs::Int16MultiArray>(topic.c_str(), 100);
+    }
+    std_msgs::Int16MultiArray _msg_int16;
+    for (int i = 0; i < trame[1]; i = i + 2)
+    {
+        _msg_int16.data.push_back(((int16_t)trame[6 + i] << 8) | trame[5 + i]);
+    }
+    publisher[num1][num2].publish(_msg_int16);
+}
+
+void PublishUInt16(ros::NodeHandle n, std::string msg_type_name)
+{
+    int num1 = CheckForEmitter((int)trame[3]);
+    int num2 = CheckForMsgType(msg_type_name, num1);
+    if (publisher[num1][num2].getTopic() == "")
+    {
+        std::string topic = "/" + emitter_topic + "/" + msg_type_name;
+        publisher[num1][num2] = n.advertise<std_msgs::UInt16MultiArray>(topic.c_str(), 100);
+    }
+    std_msgs::UInt16MultiArray _msg_uint16;
+    for (int i = 0; i < trame[1]; i = i + 2)
+    {
+        _msg_uint16.data.push_back(((uint16_t)trame[6 + i] << 8) | trame[5 + i]);
+    }
+    publisher[num1][num2].publish(_msg_uint16);
+}
+
+void PublishTrame(ros::NodeHandle n)
+{
+    switch (trame[4])
+    {
+    case t_INT8:
+        PublishInt8(n,"msg_int8");
+        break;
+    case t_V2INT8:
+        PublishInt8(n,"msg_v2_int8");
+        break;
+    case t_V3INT8:
+        PublishInt8(n,"msg_v3_int8");
+        break;
+    case t_uINT8:
+        PublishUInt8(n,"msg_uint8");
+        break;
+    case t_V2uINT8:
+        PublishUInt8(n,"msg_v2_uint8");
+        break;
+    case t_V3uINT8:
+        PublishUInt8(n,"msg_v3_uint8");
+        break;
+    case t_INT16:
+        PublishInt16(n,"msg_int16");
+        break;
+    case t_V2INT16:
+        PublishInt16(n,"msg_v2_int16");
+        break;
+    case t_V3INT16:
+        PublishInt16(n,"msg_v3_int16");
+        break;
+    case t_uINT16:
+        PublishUInt16(n,"msg_uint16");
+        break;
+    case t_V2uINT16:
+        PublishUInt16(n,"msg_v2_uint16");
+        break;
+    case t_V3uINT16:
+        PublishUInt16(n,"msg_v3_uint16");
+        break;
+
+    default:
+        break;
+    }
+}
 
 int main(int argc, char **argv)
 {
@@ -45,6 +179,10 @@ int main(int argc, char **argv)
     uint8_t read_buf[256];
 
     ROS_INFO("TEST");
+  /*   publisher.push_back(std::vector<ros::Publisher>());
+    publisher[0].push_back(ros::Publisher());
+    publisher[0][0] = n.advertise<std_msgs::Int8MultiArray>("/test/Test3", 100);
+    ROS_INFO("%s", publisher[0][0].getTopic().c_str()); */
     ros::Rate r(100);
     while (n.ok())
     {
@@ -83,7 +221,10 @@ int main(int argc, char **argv)
                     checksum ^= trame[j];
                 }
                 if (trame[length_trame - 1] == checksum)
+                {
+                    PublishTrame(n);
                     ROS_INFO("msg received without problem");
+                }
                 trame_complete = false;
             }
         }
