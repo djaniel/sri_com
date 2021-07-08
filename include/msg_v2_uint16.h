@@ -41,7 +41,7 @@ typedef struct msg_v2_uint16{
 	x.payload.e1.bytes[1], \
 	x.payload.e2.bytes[0], \
 	x.payload.e2.bytes[1], \
-	x.checksum}}
+	x.checksum}
 
 #define _MSG_V2_UINT16_CHECKSUM(x)\
 	x.checksum = _CHECKSUM_HDR(x.header) ^ _CHECKSUM_INT16(x.payload.e1) ^ _CHECKSUM_INT16(x.payload.e2)
