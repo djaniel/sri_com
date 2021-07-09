@@ -61,7 +61,7 @@ void PublishInt8(ros::NodeHandle n, std::string msg_type_name)
     if (publisher[num1][num2].getTopic() == "")
     {
         std::string topic = "/" + emitter_topic + "/" + msg_type_name;
-        publisher[num1][num2] = n.advertise<std_msgs::Int8MultiArray>(topic.c_str(), 100);
+        publisher[num1][num2] = n.advertise<std_msgs::Int8MultiArray>(topic.c_str(), 1000);
     }
     std_msgs::Int8MultiArray _msg_int8;
     for (int i = 0; i < trame[1]; i++)
@@ -78,7 +78,7 @@ void PublishUInt8(ros::NodeHandle n, std::string msg_type_name)
     if (publisher[num1][num2].getTopic() == "")
     {
         std::string topic = "/" + emitter_topic + "/" + msg_type_name;
-        publisher[num1][num2] = n.advertise<std_msgs::UInt8MultiArray>(topic.c_str(), 100);
+        publisher[num1][num2] = n.advertise<std_msgs::UInt8MultiArray>(topic.c_str(), 1000);
     }
     std_msgs::UInt8MultiArray _msg_uint8;
     for (int i = 0; i < trame[1]; i++)
@@ -95,7 +95,7 @@ void PublishInt16(ros::NodeHandle n, std::string msg_type_name)
     if (publisher[num1][num2].getTopic() == "")
     {
         std::string topic = "/" + emitter_topic + "/" + msg_type_name;
-        publisher[num1][num2] = n.advertise<std_msgs::Int16MultiArray>(topic.c_str(), 100);
+        publisher[num1][num2] = n.advertise<std_msgs::Int16MultiArray>(topic.c_str(), 1000);
     }
     std_msgs::Int16MultiArray _msg_int16;
     for (int i = 0; i < trame[1]; i = i + 2)
@@ -112,7 +112,7 @@ void PublishUInt16(ros::NodeHandle n, std::string msg_type_name)
     if (publisher[num1][num2].getTopic() == "")
     {
         std::string topic = "/" + emitter_topic + "/" + msg_type_name;
-        publisher[num1][num2] = n.advertise<std_msgs::UInt16MultiArray>(topic.c_str(), 100);
+        publisher[num1][num2] = n.advertise<std_msgs::UInt16MultiArray>(topic.c_str(), 1000);
     }
     std_msgs::UInt16MultiArray _msg_uint16;
     for (int i = 0; i < trame[1]; i = i + 2)
@@ -183,7 +183,7 @@ int main(int argc, char **argv)
     publisher[0].push_back(ros::Publisher());
     publisher[0][0] = n.advertise<std_msgs::Int8MultiArray>("/test/Test3", 100);
     ROS_INFO("%s", publisher[0][0].getTopic().c_str()); */
-    ros::Rate r(100);
+    ros::Rate r(1000);
     while (n.ok())
     {
         memset(&read_buf, '\0', sizeof(read_buf));
